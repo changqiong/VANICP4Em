@@ -14,7 +14,9 @@
 #include <Eigen/Dense>
 #include <deque>
 #include <time.h>
-
+#include <thrust/device_vector.h>
+#include <thrust/scan.h>
+#include <thrust/execution_policy.h>
 
 #define BLOCK_SIZE 64
 #define GRID_SIZE 128
@@ -414,6 +416,9 @@ __global__ void point_array_chorder(const float *src, const int *indices, int nu
 __global__ void _voxelizationHash_gpu_kernel(const float *dst_device, unsigned int *dst_hist_device, int num_points_dst){
   int num_point_per_thread = (num_points_dst - 1)/(gridDim.x * blockDim.x) + 1;
   int current_index = 0;
+  __shared__ unsigned int smem[BLOCK_SIZE];
+  smem[threadIdx.x]=0;
+  __syncthreads();
 
   float x1=0.0f, y1=0.0f, z1=0.0f;
   unsigned int x1_uint = 0, y1_uint=0, z1_uint =0;
@@ -430,7 +435,23 @@ __global__ void _voxelizationHash_gpu_kernel(const float *dst_device, unsigned i
       index_block |= INDEX_VOXEL_HIST_X;
       index_block |= INDEX_VOXEL_HIST_Y;
       index_block |= INDEX_VOXEL_HIST_Z;
-      atomicAdd(&dst_hist_device[index_block], 1);
+      // unsigned int h = index_block & (BLOCK_SIZE-1);
+      
+      // while(true){
+      // 	unsigned int prev = atomicCAS(&smem[h], 0, index_block<<8);
+      // 	if(prev==0 || (prev>>8) == index_block){
+      // 	  atomicAdd(&smem[h], 1);
+      // 	  break;
+      // 	}
+      // 	h=(h+1)&(BLOCK_SIZE-1);
+      // }
+      // __syncthreads();
+      // if (smem[threadIdx.x] != 0) {
+      // 	atomicAdd(&dst_hist_device[ smem[threadIdx.x] >> 8 ], smem[threadIdx.x] & 0xff);
+      // }
+      atomicAdd(&dst_hist_device[index_block],1);
+
+
     }
   }
 }
@@ -961,6 +982,13 @@ __host__ void _apply_optimal_transform_cuda_warper(cublasHandle_t handle, cusolv
    
 }
 
+__global__ void map_hist(uint* hist, uint* tmp){
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < VOXEL_NUM) {
+        uint c = hist[idx];
+        tmp[idx] = (c == 0 ? 2 : c + 2);
+    }
+}
 
 __host__ unsigned int _hist_asyc(const float *dst_device, unsigned int *dst_hist_device, int num_data_pts_dst){
   cudaEvent_t start, stop;
@@ -969,6 +997,8 @@ __host__ unsigned int _hist_asyc(const float *dst_device, unsigned int *dst_hist
   dim3 fullGrids((num_data_pts_dst + BLOCK_SIZE - 1) / BLOCK_SIZE);
   _voxelizationHash_gpu_kernel<<<fullGrids, BLOCK_SIZE>>>(dst_device, dst_hist_device, num_data_pts_dst);
   cudaDeviceSynchronize();
+  std::string Output_message ("histogram Time: ");
+  CLOCK_END(start,stop);
   
   uint current_point_count=0;
   uint voxel_index = 0;
@@ -977,9 +1007,7 @@ __host__ unsigned int _hist_asyc(const float *dst_device, unsigned int *dst_hist
     dst_hist_device[count] = voxel_index;
     voxel_index += current_point_count;
   }
-  std::string Output_message ("Histgram Time: ");
-  CLOCK_END(start,stop);
-  
+
   return voxel_index;
 
 }
@@ -1266,7 +1294,7 @@ __host__ int icp_cuda(const Eigen::MatrixXf &dst,  const Eigen::MatrixXf &src, i
 
 #if FILLING == 1 || FILLING == 3
   check_return_status(cudaMallocManaged((void**)&mem_hist_device, VOXEL_NUM*sizeof(unsigned int)));
-  check_return_status(cudaMalloc((void**)&mem_int_device, MEMORY_SIZE * sizeof(unsigned int)));
+  //check_return_status(cudaMalloc((void**)&mem_int_device, MEMORY_SIZE * sizeof(unsigned int)));
   check_return_status(cudaMalloc((void**)&mem_addstart_comp_device, VOXEL_NUM*sizeof(unsigned int)));
   cudaMemset(mem_hist_device, 0, VOXEL_NUM*sizeof(unsigned int)); 
 
@@ -1274,8 +1302,8 @@ __host__ int icp_cuda(const Eigen::MatrixXf &dst,  const Eigen::MatrixXf &src, i
   cudaEvent_t start, stop;
   CLOCK_START(start,stop);
   mem_int_initial(dst_host, mem_int_host, num_data_pts_dst);
-  check_return_status(cudaMalloc((void**)&mem_int_device, MEMORY_SIZE * sizeof(unsigned int)));
-  check_return_status(cudaMemcpy(mem_int_device, mem_int_host, MEMORY_SIZE * sizeof(unsigned int), cudaMemcpyHostToDevice));
+  //check_return_status(cudaMalloc((void**)&mem_int_device, MEMORY_SIZE * sizeof(unsigned int)));
+  //check_return_status(cudaMemcpy(mem_int_device, mem_int_host, MEMORY_SIZE * sizeof(unsigned int), cudaMemcpyHostToDevice));
 
 #if FILLING ==0
   std::string Output_message ("Dilation CPU Time: ");
@@ -1326,15 +1354,18 @@ __host__ int icp_cuda(const Eigen::MatrixXf &dst,  const Eigen::MatrixXf &src, i
 #if NN_OPTIMIZE==2 && (FILLING == 1||FILLING==3)  
   cudaEvent_t start_gpu, stop_gpu;
   CLOCK_START(start_gpu,stop_gpu);
-  mem_size=_hist_asyc(dst_device, mem_hist_device, num_data_pts_dst)+500;
-  printf("%d\n", mem_size);
+  mem_size=_hist_asyc(dst_device, mem_hist_device, num_data_pts_dst)*1.5;
+  printf("memsize: %d\n", mem_size);
+  cudaDeviceSynchronize();
+  
   check_return_status(cudaMemcpy(mem_addstart_comp_device, mem_hist_device, VOXEL_NUM * sizeof(unsigned int), cudaMemcpyHostToDevice));
   check_return_status(cudaMalloc((void**)&mem_int_comp_device, mem_size * sizeof(unsigned int)));
   cudaMemset(mem_int_comp_device, 0, mem_size*sizeof(unsigned int));
 
   //_filling_gpu(dst_device, mem_int_device, num_data_pts_dst);
   _filling_comp_gpu(dst_device, mem_int_comp_device, mem_addstart_comp_device, num_data_pts_dst);
- 
+  cudaDeviceSynchronize();
+  
   
 #if FILLING == 1
   std::string Output_message ("Dilation GPU Time: ");
@@ -1420,7 +1451,7 @@ __host__ int icp_cuda(const Eigen::MatrixXf &dst,  const Eigen::MatrixXf &src, i
   check_return_status(cudaFree(src_zm_device));
   check_return_status(cudaFree(ones_device));
 #if NN_OPTIMIZE == 2
-  check_return_status(cudaFree(mem_int_device));
+  //check_return_status(cudaFree(mem_int_device));
   check_return_status(cudaFree(mem_hist_device));
   check_return_status(cudaFree(mem_addstart_comp_device));
   check_return_status(cudaFree(mem_int_comp_device));

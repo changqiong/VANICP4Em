@@ -9,7 +9,7 @@ def main(object_name = "airplane_0004"):
     base_dir = "/home/changqiong/icpcuda/data/"
     pcl_original = object_name + "/source.txt"
     pcl_transformed = object_name + "/target.txt"
-    pcl_recoverd = object_name+ "/recovered.txt"
+    pcl_recoverd = "/recovered.txt"
 
     subprocess.run(["./build/registration", base_dir , pcl_original, pcl_transformed])
 

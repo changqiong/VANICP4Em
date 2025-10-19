@@ -7,7 +7,7 @@
 #define FILLING 1 // Range [0,3] 0: Dilation_CPU; 1: Dilation_GPU; 2: Scaling_CPU; 3: Scaling_GPU;  
 #define SCALING_NUM 200
 #define SCALING_STEPSIZE 0.01f
-#define VOXEL_BITS_SINGLE    4  //Range: 1~8. Voxel bits number in single axis. 
+#define VOXEL_BITS_SINGLE    5  //Range: 1~8. Voxel bits number in single axis. 
 #define LOOP_NUM 10  // Range: [0~).  
 #define MATRIX_VISIABLE false
 #define VOXEL_TABLE_VISIABLE false 
