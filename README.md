@@ -23,8 +23,8 @@ This repository contains the reference implementation of **VANICP**, a GPU-accel
 ```
 vanicp/
 │── src/
-│ ├── icp_cuda.cu # Main GPU kernels
-│ ├── data_io.cpp/.h # File I/O utilities
+│ ├── vanicp.cu # Main GPU kernels
+│ ├── io.cpp/.h # File I/O utilities
 │ ├── utils.cu # CUDA helpers
 │ ├── main.cpp # Registration entry
 │── data/
@@ -60,7 +60,7 @@ make -j
 ## 🚀 Running VANICP
 Run: 
 ```bash
-./registration ../data/ source.txt target.txt
+./vanicp ../data/ source.txt target.txt
 ```
 
 ## 📜 License — MIT

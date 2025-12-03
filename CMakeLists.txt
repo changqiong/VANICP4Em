@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-project(icp  LANGUAGES CXX CUDA)
+project(vanicp  LANGUAGES CXX CUDA)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
@@ -14,32 +14,32 @@ include_directories(.)
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-relaxed-constexpr")
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -G")
 
-add_library(data_io SHARED src/data_io.cpp)
-target_include_directories(data_io
+add_library(io SHARED src/io.cpp)
+target_include_directories(io
     PUBLIC
         ${PROJECT_INCLUDE_DIR}
 )
 
-add_library(icp_cuda STATIC src/icp_cuda.cu)
-target_include_directories(icp_cuda
+add_library(icp STATIC src/vanicp.cu)
+target_include_directories(icp
     PUBLIC
         ${PROJECT_INCLUDE_DIR}
 )
-target_link_libraries(icp_cuda
+target_link_libraries(icp
     PUBLIC
         CUDA::cudart
         CUDA::cublas
         CUDA::cusolver
 )
 
-add_executable(registration src/main.cpp)
-target_include_directories(registration
+add_executable(vanicp src/main.cpp)
+target_include_directories(vanicp
     PUBLIC
         ${PROJECT_INCLUDE_DIR}
 )
 
-target_link_libraries(registration
+target_link_libraries(vanicp
     PRIVATE
-        data_io
-        icp_cuda
+        io
+        icp
 )

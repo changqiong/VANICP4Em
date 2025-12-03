@@ -25,8 +25,8 @@
 #include <random>
 #include <sys/time.h>
 #include <chrono>
-#include "icp.h"
-#include "data_io.h"
+#include "vanicp.h"
+#include "io.h"
 
 using namespace std;
 using namespace Eigen;

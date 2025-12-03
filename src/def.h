@@ -21,8 +21,6 @@
 #define DEF_H
 
 //*******************Adjustable Values*******************//
-#define NN_OPTIMIZE 2
-#define FILLING 1 // Range [0,1] 0: Dilation_CPU; 1: Dilation_GPU;
 #define VOXEL_BITS_SINGLE    4  //Range: 1~6. Voxel bits number in single axis. 
 #define LOOP_NUM 10  // Range: [0~).  
 #define MATRIX_VISIABLE false
