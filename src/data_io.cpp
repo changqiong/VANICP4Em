@@ -1,3 +1,22 @@
+/**
+   This file is part of VANICP. (https://github.com/changqiong/VANICP4Em.git).
+
+   Copyright (c) 2025 Qiong Chang.
+
+   VANICP is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   VANICP is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with VANICP.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 #include <iostream>
 #include <fstream>
 #include "Eigen/Eigen"
@@ -7,16 +26,12 @@ using namespace Eigen;
 
 
 MatrixXd load_pcl(std::string file_name, int col ){
-
     int counter = 0;
-
     std::ifstream point_cloud_file(file_name);
     if (!point_cloud_file.good()){
         std::cout << "File not found:  " << file_name << std::endl;
         exit(0);
     }
-    
-
     std::string line;
     double buffer[MAXBUFSIZE];
 
@@ -39,7 +54,7 @@ MatrixXd load_pcl(std::string file_name, int col ){
             pcl_matrix(i,j) = buffer[col*i + j];
     }
 
-    std::cout << "MODEL OPENED FROM: " << file_name << std::endl;
+    std::cout << "Point Cloud loaded from: " << file_name << std::endl;
     return pcl_matrix;
 }
 

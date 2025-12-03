@@ -1,11 +1,28 @@
-// Code Credit: Pengfei Li
-// Email: pli081@ucr.edu
+/**
+   This file is part of VANICP. (https://github.com/changqiong/VANICP4Em.git).
+
+   Copyright (c) 2025 Qiong Chang.
+
+   VANICP is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   VANICP is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with VANICP.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
 #include <iostream>
 #include <string>
 #include <cublas_v2.h>
 #include <cusolverDn.h>
 #include <stdio.h>
+
 
 __global__ void print_matrix_device(const float *A, int nr_rows_A, int nr_cols_A) {
  
@@ -102,4 +119,3 @@ void check_return_status(cusolverStatus_t error)
     }
     
 }
-

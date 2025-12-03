@@ -1,33 +1,49 @@
+/**
+   This file is part of VANICP. (https://github.com/changqiong/VANICP4Em.git).
+
+   Copyright (c) 2025 Qiong Chang.
+
+   VANICP is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   VANICP is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with VANICP.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 #ifndef DEF_H
 #define DEF_H
 
-//#include "temp.h"
 //*******************Adjustable Values*******************//
 #define NN_OPTIMIZE 2
-#define FILLING 1 // Range [0,3] 0: Dilation_CPU; 1: Dilation_GPU; 2: Scaling_CPU; 3: Scaling_GPU;  
-#define SCALING_NUM 200
-#define SCALING_STEPSIZE 0.01f
-#define VOXEL_BITS_SINGLE    5  //Range: 1~8. Voxel bits number in single axis. 
+#define FILLING 1 // Range [0,1] 0: Dilation_CPU; 1: Dilation_GPU;
+#define VOXEL_BITS_SINGLE    4  //Range: 1~6. Voxel bits number in single axis. 
 #define LOOP_NUM 10  // Range: [0~).  
 #define MATRIX_VISIABLE false
 #define VOXEL_TABLE_VISIABLE false 
 
 //*******************Fixed Values*******************//
 #define INT_COOR_BITS 17 //Fixed Value
-#define MEMORY_BITS 26  // Fixed value. Memory address bits number 
-#define MEMORY_SIZE 67108864 //Fixed Value
+#define MEMORY_BITS 29  // Fixed value. Memory address bits number 
+#define MEMORY_SIZE 536870912 //Fixed Value
 
 #if VOXEL_BITS_SINGLE==8
 
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x1FE00
-#define INDEX_VOXEL_X ((x1_uint&0x1FE00)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x1FE00)<<1)   
-#define INDEX_VOXEL_Z ((z1_uint&0x1FE00)>>7)  
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1FE00)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1FE00)<<1)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1FE00)>>7)  
+#define INDEX_VOXEL_X ((x1_uint&0x1FE00)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x1FE00)<<4)   
+#define INDEX_VOXEL_Z ((z1_uint&0x1FE00)>>4)  
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1FE00)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1FE00)<<4)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1FE00)>>4)  
 #endif
 
 #define VOXEL_MASK 0xFFFFFF
@@ -45,12 +61,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x1FC00
-#define INDEX_VOXEL_X ((x1_uint&0x1FC00)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x1FC00)<<2)   
-#define INDEX_VOXEL_Z ((z1_uint&0x1FC00)>>5)   
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1FC00)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1FC00)<<2)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1FC00)>>5) 
+#define INDEX_VOXEL_X ((x1_uint&0x1FC00)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x1FC00)<<5)   
+#define INDEX_VOXEL_Z ((z1_uint&0x1FC00)>>2)   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1FC00)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1FC00)<<5)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1FC00)>>2) 
 #endif
 
 
@@ -69,12 +85,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x1F800
-#define INDEX_VOXEL_X ((x1_uint&0x1F800)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x1F800)<<3)   
-#define INDEX_VOXEL_Z ((z1_uint&0x1F800>>3))   
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1F800)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1F800)<<3)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1F800)>>3) 
+#define INDEX_VOXEL_X ((x1_uint&0x1F800)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x1F800)<<6)   
+#define INDEX_VOXEL_Z ((z1_uint&0x1F800))   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1F800)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1F800)<<6)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1F800)) 
 #endif
 
 
@@ -93,15 +109,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x1F000
-#define INDEX_VOXEL_X ((x1_uint&0x1F000)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x1F000)<<4)   
-#define INDEX_VOXEL_Z ((z1_uint&0x1F000)>>1)   
-#define INDEX_VOXEL_HIST_X ((x1_uint&0x1F000)>>2)   
-#define INDEX_VOXEL_HIST_Y ((y1_uint&0x1F000)>>7)   
-#define INDEX_VOXEL_HIST_Z ((z1_uint&0x1F000)>>12)   
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1F000)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1F000)<<4)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1F000)>>1)   
+#define INDEX_VOXEL_X ((x1_uint&0x1F000)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x1F000)<<7)   
+#define INDEX_VOXEL_Z ((z1_uint&0x1F000)<<2)   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1F000)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1F000)<<7)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1F000)<<2)   
 #endif
 
 
@@ -118,15 +131,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x1E000
-#define INDEX_VOXEL_X ((x1_uint&0x1E000)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x1E000)<<5)   
-#define INDEX_VOXEL_Z ((z1_uint&0x1E000)<<1)   
-#define INDEX_VOXEL_HIST_X ((x1_uint&0x1E000)>>5)   
-#define INDEX_VOXEL_HIST_Y ((y1_uint&0x1E000)>>9)   
-#define INDEX_VOXEL_HIST_Z ((z1_uint&0x1E000)>>13)  
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1E000)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1E000)<<5)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1E000)<<1)   
+#define INDEX_VOXEL_X ((x1_uint&0x1E000)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x1E000)<<8)   
+#define INDEX_VOXEL_Z ((z1_uint&0x1E000)<<4)   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1E000)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1E000)<<8)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1E000)<<4)   
 #endif
 
 
@@ -145,12 +155,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x1C000
-#define INDEX_VOXEL_X ((x1_uint&0x1C000)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x1C000)<<6)   
-#define INDEX_VOXEL_Z ((z1_uint&0x1C000)<<3)   
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1C000)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1C000)<<6)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1C000)<<3)   
+#define INDEX_VOXEL_X ((x1_uint&0x1C000)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x1C000)<<9)   
+#define INDEX_VOXEL_Z ((z1_uint&0x1C000)<<6)   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x1C000)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x1C000)<<9)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x1C000)<<6)   
 #endif
 
 
@@ -168,12 +178,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x18000
-#define INDEX_VOXEL_X ((x1_uint&0x18000)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x18000)<<7)   
-#define INDEX_VOXEL_Z ((z1_uint&0x18000)<<5)   
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x18000)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x18000)<<7)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x18000)<<5)   
+#define INDEX_VOXEL_X ((x1_uint&0x18000)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x18000)<<10)   
+#define INDEX_VOXEL_Z ((z1_uint&0x18000)<<8)   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x18000)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x18000)<<10)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x18000)<<8)   
 #endif
 
 
@@ -190,12 +200,12 @@
 #if INT_COOR_BITS==17
 #define SCALE 65536.0f
 #define INT_COOR_MASK 0x10000
-#define INDEX_VOXEL_X ((x1_uint&0x10000)<<9)   
-#define INDEX_VOXEL_Y ((y1_uint&0x10000)<<8)   
-#define INDEX_VOXEL_Z ((z1_uint&0x10000)<<7)   
-#define INDEX_VOXEL_SCALE_X ((x1_scale&0x10000)<<9)   
-#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x10000)<<8)   
-#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x10000)<<7)   
+#define INDEX_VOXEL_X ((x1_uint&0x10000)<<12)   
+#define INDEX_VOXEL_Y ((y1_uint&0x10000)<<11)   
+#define INDEX_VOXEL_Z ((z1_uint&0x10000)<<10)   
+#define INDEX_VOXEL_SCALE_X ((x1_scale&0x10000)<<12)   
+#define INDEX_VOXEL_SCALE_Y ((y1_scale&0x10000)<<11)   
+#define INDEX_VOXEL_SCALE_Z ((z1_scale&0x10000)<<10)   
 #endif
 
 
