@@ -1,20 +1,13 @@
 # GPU-Accelerated Nearest Neighbor Search for 3D Point Cloud Registration
 
 This repository contains the reference implementation of **VANICP**, a GPU-accelerated nearest neighbor search and efficient point cloud registration pipeline.  
-It accompanies the publication:
-
-> **Chang, Qiong; Wang, Weimin; Miyazaki, Jun**  
-> *Accelerating Nearest Neighbor Search in 3D Point Cloud Registration on GPUs*  
-> ACM Transactions on Architecture and Code Optimization (TACO), 2025.
-
-VANICP introduces a voxel-assisted nearest neighbor search strategy with GPU-optimized kernels to significantly accelerate ICP-based registration in 3D point cloud applications such as robotics, SLAM, AR/VR, and industrial inspection.
 
 ---
 
 ## ✨ Features
 
 - ⚡ High-performance CUDA implementation  
-- 🔍 Voxel-Assisted Nearest Neighbor Search (VA-NNS)  
+- 🔍 Voxel-based Nearest Neighbor Search 
 - 🧩 Full ICP pipeline (SVD-based transform estimation)  
 - 📈 Designed for large-scale point cloud registration  
 - 🧠 Includes CUDA kernels for:
@@ -27,7 +20,7 @@ VANICP introduces a voxel-assisted nearest neighbor search strategy with GPU-opt
 ---
 
 ## 📂 Repository Structure
-
+```
 vanicp/
 │── src/
 │ ├── icp_cuda.cu # Main GPU kernels
@@ -41,7 +34,7 @@ vanicp/
 │── CMakeLists.txt
 │── LICENSE
 │── README.md
-
+```
 
 
 ---
