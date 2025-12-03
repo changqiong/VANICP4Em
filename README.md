@@ -63,19 +63,5 @@ Run:
 ./registration ../data/ source.txt target.txt
 ```
 
-## 📖 Citation
-If you use VANICP in your research, please cite:
-```
-@article{chang2025accelerating,
-  title={Accelerating Nearest Neighbor Search in 3D Point Cloud Registration on GPUs},
-  author={Chang, Qiong and Wang, Weimin and Miyazaki, Jun},
-  journal={ACM Transactions on Architecture and Code Optimization},
-  volume={22},
-  number={1},
-  pages={1--24},
-  year={2025},
-  publisher={ACM New York, NY},
-}
-```
 ## 📜 License — MIT
 This project is released under the [MIT License](LICENSE).
