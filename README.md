@@ -78,4 +78,4 @@ If you use VANICP in your research, please cite:
 }
 ```
 ## 📜 License — MIT
-This project is released under the MIT License.
+This project is released under the [MIT License](LICENSE).
