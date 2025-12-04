@@ -99,7 +99,7 @@ ICP_OUT icp(const MatrixXd &A,
     ICP_OUT result;
 
     // Run CUDA-ICP (input: [N x 3], output: [N x 4])
-    int iter = icp_cuda(
+    int iter = vanicp(
                         src3f.transpose(),    // [N x 3]
                         dst3f.transpose(),    // [N x 3]
 			src_next,

@@ -38,7 +38,7 @@ typedef struct{
     std::vector<int> indices;
 } NEIGHBOR;
 
-int icp_cuda(
+int vanicp(
 	     const Eigen::MatrixXf& src,
 	     const Eigen::MatrixXf& dst,
 	     Eigen::MatrixXf&       src_transformed,

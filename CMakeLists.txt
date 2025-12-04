@@ -12,7 +12,8 @@ include_directories(.)
 
 
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-relaxed-constexpr")
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -G")
+set(CMAKE_CUDA_ARCHITECTURES 75)
+
 
 add_library(io SHARED src/io.cpp)
 target_include_directories(io
