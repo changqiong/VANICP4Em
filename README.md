@@ -68,9 +68,8 @@ Run:
 @article{changVANICPV2,
   title={A dynamic memory assignment strategy for dilation-based ICP algorithm on embedded GPUs},
   author={Chang, Qiong and Wang, Weimin and Zhong, Junpei and Miyazaki, Jun},
-  journal={Arxiv},
-  year={2025},
-  publisher={Arxiv}
+  journal={arXiv preprint arXiv:2512.04996},
+  year={2025}
 }
 ```
 
