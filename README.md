@@ -1,6 +1,6 @@
 # GPU-Accelerated Nearest Neighbor Search for 3D Point Cloud Registration
 
-This repository contains the reference implementation of **VANICP**, a GPU-accelerated nearest neighbor search and efficient point cloud registration pipeline.  
+This repository contains the reference implementation of **VANICP-V2**, a GPU-accelerated nearest neighbor search and efficient point cloud registration pipeline.  
 
 ---
 
@@ -57,11 +57,23 @@ cd build
 cmake ..
 make -j
 ```
-## 🚀 Running VANICP
+## 🚀 Running VANICP-V2
 Run: 
 ```bash
 ./vanicp ../data/ source.txt target.txt
 ```
+
+## Reference 
+```bibtex
+@article{changVANICPV2,
+  title={A dynamic memory assignment strategy for dilation-based ICP algorithm on embedded GPUs},
+  author={Chang, Qiong and Wang, Weimin and Junpei, Zhong and Jun, Miyazaki},
+  journal={Arxiv},
+  year={2025},
+  publisher={Arxiv}
+}
+```
+
 
 ## 📜 License — MIT
 This project is released under the [MIT License](LICENSE).
