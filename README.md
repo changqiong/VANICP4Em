@@ -1,4 +1,4 @@
-# GPU-Accelerated Nearest Neighbor Search for 3D Point Cloud Registration
+# A dynamic memory assignment strategy for dilation-based ICP algorithm on embedded GPUs
 
 This repository contains the reference implementation of **VANICP-V2**, a GPU-accelerated nearest neighbor search and efficient point cloud registration pipeline.  
 
