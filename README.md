@@ -67,7 +67,7 @@ Run:
 ```bibtex
 @article{changVANICPV2,
   title={A dynamic memory assignment strategy for dilation-based ICP algorithm on embedded GPUs},
-  author={Chang, Qiong and Wang, Weimin and Junpei, Zhong and Jun, Miyazaki},
+  author={Chang, Qiong and Wang, Weimin and Zhong, Junpei and Miyazaki, Jun},
   journal={Arxiv},
   year={2025},
   publisher={Arxiv}
