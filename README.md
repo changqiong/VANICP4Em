@@ -1,6 +1,6 @@
 # A dynamic memory assignment strategy for dilation-based ICP algorithm on embedded GPUs
 
-This repository contains the reference implementation of **VANICP-V2**, a GPU-accelerated nearest neighbor search and efficient point cloud registration pipeline.  
+This repository contains the reference implementation of **VANICP-V2** ([paper](https://doi.org/10.48550/arXiv.2512.04996)), a GPU-accelerated nearest neighbor search and efficient point cloud registration pipeline.  
 
 ---
 
